@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Control - Beta 2.0.0</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        button {
+            background-color: red;
+            color: white;
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff3333;
+        }
+
+        #designerInfo {
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        #rules {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border: 1px solid red;
+            padding: 10px;
+            width: 300px;
+            text-align: left;
+        }
+
+        #rules ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #rules ul li {
+            margin-bottom: 5px;
+        }
+
+        #buttonMessage {
+            font-size: 20px;
+            color: white;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="rules">
+        <p>INFO:</p>
+        <ul>
+            <li>1. button goes away so you can not span :)</li>
+            <li>2. After 50 clicks a car horn goes off in my room</li>
+            <li>3. If something does not message work, it really helps me improve my code</li>
+            <li>4. My GitHub is linked below</li>
+            <a href="https://github.com/Ahart0841" style="color: #007bff; text-decoration: none;">Ahart0841</a>
+        </ul>
+    </div>
+
+    <div id="designerInfo">
+        Developed by <a href="https://github.com/Ahart0841" style="color: #007bff; text-decoration: none;">Ahart0841</a>
+        (<span style="color: green;">version 1.1.0</span>)
+    </div>
+
+    <form id="blinkForm" action="/blink" method="POST">
+        <button type="submit">Blink LED</button>
+    </form>
+
+    <div id="buttonMessage">The button will be back in <span id="countdownTimer">1</span> second</div>
+
+    <script>
+        const form = document.getElementById('blinkForm');
+        const sendButton = form.querySelector('button');
+        const buttonMessage = document.getElementById('buttonMessage');
+        const countdownTimer = document.getElementById('countdownTimer');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            sendButton.style.display = 'none';  // Hide the button immediately when clicked
+            buttonMessage.style.display = 'block';  // Show the countdown message
+            let count = 1;  // Countdown starts at 1 second
+
+            countdownTimer.textContent = count;  // Set the initial countdown value to 1 second
+
+            // Update the countdown every second
+            const countdownInterval = setInterval(() => {
+                count--;
+                if (count >= 0) {
+                    countdownTimer.textContent = count;
+                }
+
+                if (count === 0) {
+                    clearInterval(countdownInterval);  // Stop the interval when countdown reaches 0
+                    buttonMessage.style.display = 'none';  // Hide the countdown message
+                    sendButton.style.display = 'inline-block';  // Show the button again
+                }
+            }, 1000);  // 1000ms or 1 second interval for countdown
+
+            // Make the request after hiding the button
+            fetch('/blink', {
+                method: 'POST'
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("LED is blinking!");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to send request.');
+            });
+        });
+    </script>
+</body>
+</html>
