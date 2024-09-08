@@ -1,24 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
 
-ESP32_IP = "http://10.0.0.90"
+ESP_URL = 'http://10.0.0.90/blink'
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/blink', methods=['POST'])
-def blink_led():
+@app.route('/trigger', methods=['POST'])
+def trigger_esp():
     try:
-        response = requests.get(f'{ESP32_IP}/blink')
-        if response.status_code == 200:
-            return "LED Blinking"
-        else:
-            return "Failed to send request", 500
-    except Exception as e:
-        return f"Error: {e}", 500
+        response = requests.get(ESP_URL)
+        response.raise_for_status()  
+        return jsonify({"message": "Request sent to ESP", "esp_response": response.text}), 200
+    except requests.exceptions.RequestException as e:
+        app.logger.error(f"Error sending request to ESP: {e}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(debug=True)
