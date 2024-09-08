@@ -81,14 +81,14 @@
         (<span style="color: green;">version 1.1.0</span>)
     </div>
 
-    <form id="blinkForm" action="/blink" method="POST">
+    <form id="triggerForm">
         <button type="submit">Blink LED</button>
     </form>
 
     <div id="buttonMessage">The button will be back in <span id="countdownTimer">1</span> second</div>
 
     <script>
-        const form = document.getElementById('blinkForm');
+        const form = document.getElementById('triggerForm');
         const sendButton = form.querySelector('button');
         const buttonMessage = document.getElementById('buttonMessage');
         const countdownTimer = document.getElementById('countdownTimer');
@@ -117,16 +117,15 @@
             }, 1000);  // 1000ms or 1 second interval for countdown
 
             // Make the request after hiding the button
-            fetch('/blink', {
+            fetch('https://f6ff-2601-84-8b01-7b20-e5cb-1ec9-334f-a4a0.ngrok-free.app/trigger', {
                 method: 'POST'
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
                 console.log("LED is blinking!");
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Failed to send request.');
             });
         });
     </script>
