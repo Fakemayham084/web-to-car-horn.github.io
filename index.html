@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BETA 2.3.0</title>
+    <title>2.3.1</title>
     <style>
         body {
             background-color: black;
@@ -131,19 +131,22 @@
             .then(response => response.json())
             .then(data => {
                 totalClicks.textContent = data.clicks;  // Update the total clicks globally
+                getClickCount();  // Update clicks again after successful trigger
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error in trigger request:', error);
             });
-			
-            // Fetch updated click count after sending the request
-            getClickCount();
         });
 
         // Function to fetch the current global click count when the page loads or after a click
         function getClickCount() {
             fetch('https://a7cb-2601-84-8b01-7b20-70d5-1827-62a6-ea70.ngrok-free.app/get_clicks')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     totalClicks.textContent = data.clicks;  // Update the total clicks displayed
                 })
