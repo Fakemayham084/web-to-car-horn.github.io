@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2.3.3</title>
+    <title>BETA 2.3.4</title>
     <style>
         body {
             background-color: black;
@@ -130,7 +130,11 @@
             })
             .then(response => response.json())
             .then(data => {
-                totalClicks.textContent = data.clicks;  // Update the total clicks globally
+                if (data.clicks !== undefined) {
+                    totalClicks.textContent = data.clicks;  // Update the total clicks globally
+                } else {
+                    console.error('No click data returned');
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -139,12 +143,16 @@
 
         // Fetch the current global click count on page load
         window.onload = function() {
-            fetch('https://a7cb-2601-84-8b01-7b20-70d5-1827-62a6-ea70.ngrok-free.app/trigger', {
-                method: 'POST'
+            fetch('https://a7cb-2601-84-8b01-7b20-70d5-1827-62a6-ea70.ngrok-free.app/get_clicks', {
+                method: 'GET'
             })
             .then(response => response.json())
             .then(data => {
-                totalClicks.textContent = data.clicks;  // Update the total clicks displayed
+                if (data.clicks !== undefined) {
+                    totalClicks.textContent = data.clicks;  // Update the total clicks displayed
+                } else {
+                    console.error('No click data returned');
+                }
             })
             .catch(error => {
                 console.error('Error fetching clicks:', error);
