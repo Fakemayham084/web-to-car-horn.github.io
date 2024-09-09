@@ -133,14 +133,13 @@
             .then(response => response.json())
             .then(data => {
                 totalClicks.textContent = data.clicks;  // Update the total clicks globally
-                console.log("LED is blinking!");
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         });
 
-        // Function to fetch the current global click count when the page loads
+        // Function to fetch the current global click count
         function getClickCount() {
             fetch('https://a7cb-2601-84-8b01-7b20-70d5-1827-62a6-ea70.ngrok-free.app/get_clicks')
                 .then(response => response.json())
@@ -151,6 +150,9 @@
                     console.error('Error fetching clicks:', error);
                 });
         }
+
+        // Polling mechanism to fetch click count every second
+        setInterval(getClickCount, 1000);
 
         // Fetch the current global click count on page load
         window.onload = getClickCount;
