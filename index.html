@@ -127,7 +127,7 @@
             }, 1000);  // 1000ms or 1 second interval for countdown
 
             // Make the request after hiding the button
-            fetch('https://f6ff-2601-84-8b01-7b20-e5cb-1ec9-334f-a4a0.ngrok-free.app/trigger', {
+            fetch('https://5215-2601-84-8b01-7b20-e5cb-1ec9-334f-a4a0.ngrok-free.app/trigger', {
                 method: 'POST'
             })
             .then(response => response.json())
@@ -142,7 +142,7 @@
 
         // Function to fetch the current global click count when the page loads
         function getClickCount() {
-            fetch('https://f6ff-2601-84-8b01-7b20-e5cb-1ec9-334f-a4a0.ngrok-free.app/get_clicks')
+            fetch('https://5215-2601-84-8b01-7b20-e5cb-1ec9-334f-a4a0.ngrok-free.app/get_clicks')
                 .then(response => response.json())
                 .then(data => {
                     totalClicks.textContent = data.clicks;  // Update the total clicks displayed
