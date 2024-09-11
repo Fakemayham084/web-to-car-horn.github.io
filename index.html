@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BETA 2.3.4</title>
+    <title>WEB to CAR HORN</title>
     <style>
         body {
             background-color: black;
@@ -62,27 +62,27 @@
             display: none;
             margin-top: 10px;
         }
-
-        #clickCounter {
-            font-size: 24px;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
     <div id="rules">
         <p>INFO:</p>
         <ul>
-            <li>1. Button goes away so you cannot spam :)</li>
-            <li>2. After 50 clicks, a car horn goes off in my room</li>
-            <li>3. If something does not work, it really helps me improve my code</li>
-            <li>4. My GitHub is linked below</li>
-            <a href="https://github.com/Ahart0841" style="color: #007bff; text-decoration: none;">Ahart0841</a>
+            <li>1. The button disappears so you cannot spam :)</li>
+            <li>2. After 100 clicks, a car horn goes off in my room.</li>
+            <li>3. If something doesn't work, it helps me improve my code.</li>
+            <li>4. My GitHub is linked below.</li>
+            <li>
+                <a href="https://github.com/Ahart0841" style="color: #007bff; text-decoration: none;">Ahart0841</a> and 
+                <a href="https://github.com/Fakemayham084" style="color: #007bff; text-decoration: none;">Fakemayham084</a>
+            </li>
         </ul>
     </div>
 
     <div id="designerInfo">
-        Developed by <a href="https://github.com/Ahart0841" style="color: #007bff; text-decoration: none;">Ahart0841</a>
+        Developed by <a href="https://github.com/Ahart0841" style="color: #007bff; text-decoration: none;">Ahart0841</a> 
+        & 
+        <a href="https://github.com/Fakemayham084" style="color: #007bff; text-decoration: none;">Fakemayham084</a> 
         (<span style="color: green;">version 1.2.0</span>)
     </div>
 
@@ -92,14 +92,11 @@
 
     <div id="buttonMessage">The button will be back in <span id="countdownTimer">1</span> second</div>
 
-    <div id="clickCounter">Total Clicks: <span id="totalClicks">0</span></div>
-
     <script>
         const form = document.getElementById('triggerForm');
         const sendButton = form.querySelector('button');
         const buttonMessage = document.getElementById('buttonMessage');
         const countdownTimer = document.getElementById('countdownTimer');
-        const totalClicks = document.getElementById('totalClicks');
 
         form.addEventListener('submit', function(event) {
             event.preventDefault();
@@ -124,40 +121,18 @@
                 }
             }, 1000);  // 1000ms or 1 second interval for countdown
 
-            // Make the request to trigger ESP and update click count
-            fetch('https://a7cb-2601-84-8b01-7b20-70d5-1827-62a6-ea70.ngrok-free.app/trigger', {
+            // Make the request after hiding the button
+            fetch('distinct-obliging-bonefish.ngrok-free.app/trigger', {
                 method: 'POST'
             })
             .then(response => response.json())
             .then(data => {
-                if (data.clicks !== undefined) {
-                    totalClicks.textContent = data.clicks;  // Update the total clicks globally
-                } else {
-                    console.error('No click data returned');
-                }
+                console.log("LED is blinking!");
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         });
-
-        // Fetch the current global click count on page load
-        window.onload = function() {
-            fetch('https://a7cb-2601-84-8b01-7b20-70d5-1827-62a6-ea70.ngrok-free.app/get_clicks', {
-                method: 'GET'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.clicks !== undefined) {
-                    totalClicks.textContent = data.clicks;  // Update the total clicks displayed
-                } else {
-                    console.error('No click data returned');
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching clicks:', error);
-            });
-        };
     </script>
 </body>
 </html>
